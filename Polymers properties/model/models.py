@@ -99,6 +99,7 @@ class MLP(nn.Module):
     
     def forward(self, X):
         out = self.net(X)
+        out = self.final_layer(out)
         return out
 
 
@@ -125,10 +126,10 @@ class PolymerRNN(nn.Module):
         self.final_fc = nn.LazyLinear(out_size)
     
     def forward(self, X):
-        shape = (self.num_layer, X.size(0), self.hidden)
+        shape = (self.num_layer, X.size(0), self.hidden_size)
         h0, c0 = torch.zeros(shape).to(self.device), torch.zeros(shape).to(self.device)
         out, _ = self.rnn(X, (h0, c0))
         if len(self.hiddens) != 0:
-            out = self.fc(out)
+            out = self.fc(out.reshape(X.size(0), -1))
         out = self.final_fc(out)
         return out

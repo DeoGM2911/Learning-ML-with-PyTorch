@@ -68,7 +68,7 @@ class PolymerDataset():
         # Converrt to Torch tensors
         return torch.from_numpy(y.to_numpy().astype(np.float32)).view(-1, 1).to(self.device)
     
-    def get_features(self, property, train=True, cnn_model=False):
+    def get_features(self, property, train=True, cnn_model=False, rnn_model=False):
         assert property in ["tg", "tc", "ffv", "density", "rg"]
         idx = 1
         if train:
@@ -79,6 +79,8 @@ class PolymerDataset():
         X = torch.from_numpy(smiles.astype(np.float32))
         if cnn_model:
             X = X.view(len(X), 1, -1)
+        if rnn_model:
+            X = X.view(len(X), EMBED_DIM, 1)
         
         return X.to(self.device)
     
