@@ -1,2 +1,8 @@
 train
-images
+images/cat_dog/*.png
+
+!/images/cat_dog/0.png
+!/images/cat_dog/50.png
+!/images/cat_dog/100.png
+!/images/cat_dog/150.png
+!/images/cat_dog/final.png
