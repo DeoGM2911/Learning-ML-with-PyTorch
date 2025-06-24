@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import pandas.plotting as pd_plt
 
 
-def visualize_loss(train_hist, test_hist):
+def visualize_loss(train_hist, test_hist, name):
     fig, axes = plt.subplots(2, 3, figsize=(12, 6))
     axes = axes.flatten()
     
@@ -18,6 +18,7 @@ def visualize_loss(train_hist, test_hist):
     
     plt.tight_layout()
     plt.show()
+    fig.savefig(f"../images/{name}.png")
 
 
 def scatter_matrix(data):
