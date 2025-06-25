@@ -33,6 +33,7 @@ I decomposed this project into 4 major components:
 
   - `data_explore.ipynb`, for exploring the data.
   - `poly_properties.ipynb`, for training the models.
+  - `cnn-resnext-inspired.ipynb`, just the notebook version for Kaggle.
 
 - `/requirements.txt`
 - `/pretrained` which stores the models I have trained.
@@ -54,17 +55,32 @@ Lastly, the data is passed through a head which is a simple `Linear` layer.
 
 Since most properties have a relatively "small" dataset (except FFV), I don't have a deep neural network per se. Also, since I train 5 different models, it will take up quite a lot of spaces in the memory. Therefore, I opt for a batch gradient descent. Here are the hyperparameters I choose for the CNN models:
 
-- For any properties except FFV:
+<!--
+tg_cnn = PolymerCNN(1, (32, 32, 64, 64, 128, 256), ((4, 8), (2, 4, 8, 8)), 2, (2, 4), 256)
+ffv_cnn = PolymerCNN(1, (32, 64, 64, 128, 128, 256), ((4, 8), (8, 16, 16, 32)), 2, (2, 4), 512)
+tc_cnn = PolymerCNN(1, (16, 32, 32, 64, 128, 256), ((4, 8), (2, 4, 8, 8)), 2, (2, 4), 256)
+density_cnn = PolymerCNN(1, (32, 32, 64, 64, 128, 256), ((4, 8), (2, 4, 8, 8)), 2, (2, 4), 256)
+rg_cnn = PolymerCNN(1, (16, 32, 32, 64, 128, 256), ((4, 8), (2, 4, 8, 8)), 2, (2, 4), 256) -->
+
+- For Tg and Density:
+  - `output size`: $1$
+  - `channels`: $(32, 32, 64, 64, 128, 256)$
+  - `groups`: $((4, 8), (2, 4, 8, 8))$
+  - `depth`: $2$
+  - `block_depths`: $(2, 4)$
+  - `hidden_size`: $256$
+
+- For Tc and Rg:
   - `output size`: $1$
   - `channels`: $(16, 32, 32, 64, 128, 256)$
-  - `groups`: $((4, 8), (2, 4, 4, 8))$
+  - `groups`: $((4, 8), (2, 4, 8, 8))$
   - `depth`: $2$
   - `block_depths`: $(2, 4)$
   - `hidden_size`: $256$
 
 - For the FFV property:
   - `output size`: $1$
-  - `channels`: $(32, 64, 64, 64, 128, 128)$
+  - `channels`: $(32, 64, 64, 128, 128, 256)$
   - `groups`: $((4, 8), (8, 16, 16, 32))$
   - `depth`: $2$
   - `block_depths`: $(2, 4)$
@@ -123,4 +139,4 @@ For the RNN models, we can see that the training didn't converge well for Rg. Fo
 
 For all properties except FFV, I picked the CNN models for generating my best performing model. For the FFV, I use the MLP model.
 
-The weighted MAD metric created by the competition for the training dataset is $0.0368$.
+The weighted MAD metric created by the competition for the training dataset is $0.0367$.
