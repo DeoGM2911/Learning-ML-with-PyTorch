@@ -1,7 +1,0 @@
-# python == 3.10.18
-sys
-numpy
-matplotlib
-pandas
-torch
-rdkit == 2025.03.3
