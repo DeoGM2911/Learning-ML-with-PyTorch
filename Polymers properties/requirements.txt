@@ -8,3 +8,8 @@ scikit-learn
 matplotlib
 jupyterlab
 flask
+bigsmiles
+transformers
+
+# To install the DECIMER classifier run:
+# pip install git+https://github.com/Iagea/DECIMER-Image-Classifier
