@@ -1,15 +1,25 @@
-rdkit
+# ⚠️ IMPORTANT: install rdkit via conda, not pip
+# conda install -c conda-forge rdkit
+
+# Deep learning and ML
 torch
 torchvision
 torchaudio
-numpy
+tensorflow==2.11.0
+numpy==1.24.4
 pandas
 scikit-learn
-matplotlib
-jupyterlab
-flask
-bigsmiles
-transformers
 
-# To install the DECIMER classifier run:
+# Image handling
+pillow==9.5.0
+matplotlib
+
+# Web and frontend
+flask
+jupyterlab
+
+# DECIMER core
+DECIMER
+
+# DECIMER image classifier (install manually)
 # pip install git+https://github.com/Iagea/DECIMER-Image-Classifier
