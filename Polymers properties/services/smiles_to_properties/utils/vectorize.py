@@ -9,6 +9,24 @@ import numpy as np
 EMBED_DIM = 2048
 
 
+def mol_vectorize_text(smiles, embed_dim):
+    """
+    given a SMILES string, return the embedding for the it.
+    """
+    embedding = np.zeros((1, embed_dim))
+    gen = rdFingerprintGenerator.GetMorganGenerator(radius=2, fpSize=embed_dim)
+    mol = Chem.MolFromSmiles(smiles)
+
+    # Convert to "sentence" of atom environments
+    fp = gen.GetFingerprint(mol)
+
+    # Generate embedding
+    fp_array = np.zeros((embed_dim,), dtype=int)
+    ConvertToNumpyArray(fp, fp_array)
+    embedding[0] = fp_array
+    return embedding
+
+
 def mol_vectorize(documents:pd.DataFrame, embed_dim: int):
     """
     Vectorize a SMILES documenet of molecues. Note that the provided word model 
