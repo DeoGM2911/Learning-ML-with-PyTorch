@@ -17,9 +17,12 @@ matplotlib
 # Web and frontend
 flask
 jupyterlab
-
 # DECIMER core
 DECIMER
 
+
 # DECIMER image classifier (install manually)
-# pip install git+https://github.com/Iagea/DECIMER-Image-Classifier
+pip install git+https://github.com/Iagea/DECIMER-Image-Classifier
+# If pystow fails to download, manually dowload the pretrained from this url
+# https://zenodo.org/record/8300489/files/models.zip
+# and place it into the directory pystow is trying to download to
