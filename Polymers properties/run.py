@@ -1,6 +1,9 @@
 import sys
 from pathlib import Path
-sys.path.append(str(Path(__file__).resolve().parent / "services"))
+
+services_path = str(Path(__file__).resolve().parent / "services")
+if services_path not in sys.path:
+    sys.path.append(services_path)
 
 from app import create_app
 

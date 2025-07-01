@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+<head>
+  <title>Add Task</title>
+</head>
+<body>
+  <h1>Add Two Numbers</h1>
+  <form id="add-form">
+    <input type="number" id="x" name="x" placeholder="x" required>
+    <input type="number" id="y" name="y" placeholder="y" required>
+    <button type="submit">Submit</button>
+  </form>
+
+  <p>Status: <span id="status">Idle</span></p>
+  <p>Result: <span id="result">None</span></p>
+
+  <script>
+    document.getElementById('add-form').addEventListener('submit', async function (e) {
+      e.preventDefault();
+      document.getElementById('status').textContent = 'Submitting...';
+      document.getElementById('result').textContent = 'Waiting...';
+
+      const x = document.getElementById('x').value;
+      const y = document.getElementById('y').value;
+
+      const res = await fetch('/start-task', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ x: Number(x), y: Number(y) })
+      });
+
+      const data = await res.json();
+      const taskId = data.task_id;
+
+      async function pollStatus() {
+        const r = await fetch(`/status/${taskId}`);
+        const statusData = await r.json();
+
+        document.getElementById('status').textContent = statusData.status;
+
+        if (statusData.status === 'SUCCESS') {
+          document.getElementById('result').textContent = statusData.result;
+        } else {
+          setTimeout(pollStatus, 1000);  // poll every 1 sec
+        }
+      }
+
+      pollStatus();
+    });
+  </script>
+</body>
+</html>
