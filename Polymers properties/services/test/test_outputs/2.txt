@@ -1,0 +1,1 @@
+{'tg': array([[147.66934]], dtype=float32), 'ffv': array([[0.36521208]], dtype=float32), 'tc': array([[0.19230734]], dtype=float32), 'density': array([[1.1689371]], dtype=float32), 'rg': array([[21.36119]], dtype=float32)}
