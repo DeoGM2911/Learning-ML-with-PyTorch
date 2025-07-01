@@ -1,5 +1,4 @@
-from app.tasks import celery
+# celery_worker.py
+from app import create_app, celery
 
-# No need to define anything else — just point Celery to this module
-# To run:
-# celery -A celery_worker.celery worker --loglevel=info
+app = create_app()

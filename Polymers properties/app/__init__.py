@@ -10,7 +10,7 @@ def create_app():
     app.config.from_mapping(
         SECRET_KEY='your-secret-key',
         CELERY_BROKER_URL='redis://localhost:6379/0',
-        CELERY_RESULT_BACKEND='redis://localhost:6379/0'
+        result_backend='redis://localhost:6379/0'
     )
 
     # --- Init Celery with app context
