@@ -5,7 +5,7 @@
 # @version: 1.0.0
 
 from flask import Flask, render_template, request, jsonify
-from tasks import add
+from app.tasks import add
 from celery.result import AsyncResult
 
 app = Flask(__name__)
