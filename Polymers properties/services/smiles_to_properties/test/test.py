@@ -3,10 +3,10 @@ import os
 from time import perf_counter
 
 # Append the smiles_to_properties dir to sys.path
-sys.path.append(f"{os.getcwd()}/services/smiles_to_properties/")
+# sys.path.append(f"{os.getcwd()}/services/smiles_to_properties/")
 
-from utils.pretrained import load_pretrained, predict
-from utils.vectorize import mol_vectorize, EMBED_DIM
+from ..utils.pretrained import load_pretrained, predict
+from ..utils.vectorize import mol_vectorize, EMBED_DIM
 import pandas as pd
 import torch
 import numpy as np

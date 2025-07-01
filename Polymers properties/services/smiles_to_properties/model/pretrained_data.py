@@ -1,4 +1,4 @@
-from model.data import PolymerDataset
+from ..model.data import PolymerDataset
 import torch
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")

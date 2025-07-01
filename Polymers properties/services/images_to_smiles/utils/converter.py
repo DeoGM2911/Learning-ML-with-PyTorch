@@ -1,4 +1,5 @@
 from rdkit import Chem
+from .validate_txt import clean_smiles
 
 
 def inchi_to_smiles(inchi):
@@ -8,4 +9,4 @@ def inchi_to_smiles(inchi):
     
     # Convert to smiles
     smiles = Chem.MolToSmiles(mol)
-    return smiles
+    return clean_smiles(smiles)

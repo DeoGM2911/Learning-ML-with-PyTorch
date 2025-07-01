@@ -1,0 +1,13 @@
+*C(C[*])[*]
+*C(C(I)[*])[*]
+*C(C(Cl)[*])[*]
+*[CH]OC(=O)C1=CC=C(C=C1)C(=O)O[CH]
+*CC(C)(CI)C(=O)OC
+*CCCCCCNC(=O)CCCCCC(=O)OC
+*C(C(F)(F)[*])(F)(F)[*]
+*[CH]OC(=O)C1=CC=C(C=C1)C(=O)O[CH]
+*C1=C(C=C(C(=C1)N)I)I
+*CC(=O)OC1=CC=CC=C1C(=O)O
+*CN1C=NC2=C1C(=O)N(C)C(=O)N2C
+*C([C@@H]1[C@@H]([C@@H]([C@H]([C@H](O)O1)O)O)O)O
+*CC(C)CC1=CC=C(C=C1)[C@@H](C)C(=O)O

@@ -1,8 +1,13 @@
-import torch
-from model.models import PolymerCNN
+import sys
 from pathlib import Path
-from model.pretrained_data import convert_rg, convert_tg
 
+# sys.path.append(str(Path(__file__).resolve().parent.parent))
+
+import torch
+import numpy as np
+from ..model.models import PolymerCNN
+from pathlib import Path
+from ..model.pretrained_data import convert_rg, convert_tg
 
 def load_pretrained():
     # CNN models
@@ -29,7 +34,9 @@ def load_pretrained():
 
 
 def predict(models, X):
-    X = X.view(len(X), 1, -1)
+    if type(X) == torch.Tensor:
+        X = X.numpy()
+    X = torch.from_numpy(X.astype(np.float32)).view(len(X), 1, -1)
     tg_out = convert_tg(models["tg"](X).detach())
     ffv_out = models["ffv"](X).detach()
     tc_out = models["tc"](X).detach()

@@ -1,7 +1,7 @@
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.utils import shuffle 
-from utils.vectorize import EMBED_DIM, mol_vectorize
+from ..utils.vectorize import EMBED_DIM, mol_vectorize
 import torch
 import numpy as np
 

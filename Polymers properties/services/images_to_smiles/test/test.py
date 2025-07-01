@@ -4,7 +4,7 @@ import os
 from pprint import pprint
 
 # Append the smiles_to_properties dir to sys.path
-sys.path.append(f"{os.getcwd()}/services/images_to_smiles/")
+# sys.path.append(f"{os.getcwd()}/services/images_to_smiles/")
 
 current = Path(__file__).resolve()
 utils = current.parent.parent
@@ -12,9 +12,9 @@ data = current.parent.parent / "data"
 img = current.parent.parent / "images"
 
 import pandas as pd
-from utils.converter import inchi_to_smiles
-from utils.validate_txt import *
-from models.decimer import predict_smiles, is_chemical_image
+from ..utils.converter import inchi_to_smiles
+from ..utils.validate_txt import *
+from ..models.decimer import predict_smiles, is_chemical_image
 
 
 def test_converter():
@@ -66,13 +66,13 @@ def test_image_to_smiles():
 def test_is_chemical():
     result = {}
     for file in img.iterdir():
-        result[file] = is_chemical_image(file)
+        result[file] = is_chemical_image(img / file)
     
     pprint(result, indent=4)
 
 
 if __name__ == "__main__":
-    # test_converter()
-    # test_validate_text()
-    # test_image_to_smiles()
+    test_converter()
+    test_validate_text()
+    test_image_to_smiles()
     test_is_chemical()

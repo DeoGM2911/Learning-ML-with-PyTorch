@@ -1,5 +1,10 @@
 from DECIMER import predict_SMILES
 from decimer_image_classifier import DecimerImageClassifier
+from PIL import Image
+from ..utils.validate_txt import clean_smiles
+
+# Threshold for detecting chemical image
+THRESHOLD = 0.005
 
 
 def predict_smiles(image_path):
@@ -7,7 +12,7 @@ def predict_smiles(image_path):
     Using the DECIMER transformer, generate the SMILES representation of the 
     chemical in the image.
     """
-    return predict_SMILES(image_path, True)
+    return clean_smiles(predict_SMILES(image_path))
 
 
 def is_chemical_image(img_file):
@@ -16,6 +21,7 @@ def is_chemical_image(img_file):
     Return the prediction (true/false) and the confidence.
     """
     clf = DecimerImageClassifier()
-    is_struct = clf.is_chemical_structure(img_file)
-    score = clf.get_classifier_score(img_file)
+    img = Image.open(img_file)
+    is_struct = clf.is_chemical_structure(img, THRESHOLD)
+    score = clf.get_classifier_score(img)
     return is_struct, score
