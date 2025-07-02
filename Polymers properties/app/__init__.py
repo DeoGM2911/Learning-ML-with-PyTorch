@@ -40,4 +40,8 @@ def create_app() -> Flask:
     global celery  # bind to the module-level name
     celery = make_celery(app)
 
+    # register routes
+    from .routes import bp
+    app.register_blueprint(bp)
+    
     return app
