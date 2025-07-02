@@ -12,7 +12,7 @@ app = Flask(__name__)
 
 @app.route('/', methods=['GET'])
 def show_add_page():
-    return render_template('add.html')
+    return render_template('templates/add.html')
 
 @app.route('/start-task', methods=['POST'])
 def start_task():

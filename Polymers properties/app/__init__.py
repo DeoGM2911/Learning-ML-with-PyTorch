@@ -1,30 +1,43 @@
+# app/__init__.py
 from flask import Flask
 from celery import Celery
 
-celery = Celery(__name__)  # global instance (can be imported anywhere)
+# We create an *empty* placeholder so that other modules can import it
+celery = Celery(__name__, broker="redis://localhost:6379/0", backend="redis://localhost:6379/0")
 
-def create_app():
-    app = Flask(__name__)
-
-    # --- App Configuration
-    app.config.from_mapping(
-        SECRET_KEY='your-secret-key',
-        CELERY_BROKER_URL='redis://localhost:6379/0',
-        result_backend='redis://localhost:6379/0'
+def make_celery(app: Flask) -> Celery:
+    """Factory that builds a Celery instance bound to `app`."""
+    celery_app = Celery(
+        app.import_name,
+        broker=app.config["broker_url"],
+        backend=app.config["result_backend"],
+        include=["app.tasks"],          # tasks are auto-discovered
     )
 
-    # --- Init Celery with app context
-    init_celery(app)
+    celery_app.conf.update(app.config)
 
-    return app
-
-def init_celery(app=None):
-    app = app or create_app()
-    celery.conf.update(app.config)
-
-    class ContextTask(celery.Task):
+    # Ensure every task runs inside the Flask app-context
+    class ContextTask(celery_app.Task):
         def __call__(self, *args, **kwargs):
             with app.app_context():
                 return self.run(*args, **kwargs)
 
-    celery.Task = ContextTask
+    celery_app.Task = ContextTask
+    return celery_app
+
+
+def create_app() -> Flask:
+    app = Flask(__name__)
+
+    # Flask (and Celery) configuration
+    app.config.update(
+        SECRET_KEY="your-secret-key",
+        broker_url="redis://localhost:6379/0",
+        result_backend="redis://localhost:6379/0",
+    )
+
+    # Attach Celery
+    global celery  # bind to the module-level name
+    celery = make_celery(app)
+
+    return app
