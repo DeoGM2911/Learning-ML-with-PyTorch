@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Project Name</title>
+  <link
+    rel="stylesheet"
+    href="../static/styles.css"
+    type="text/css"
+  >
+</head>
+<body>
+  <nav>
+    <div class="logo">
+      <!-- Update the src to wherever you place your generated logo file -->
+      <img src="..\images\logo.png" alt="PPP Logo">
+      <span>Polymers' Properties Predictions</span>
+    </div>
+    <div class="menu-toggle" id="menu-toggle">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+    <div class="nav-links" id="nav-links">
+      <a href="/">About</a>
+      <a href="/predictions">Predictions</a>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <h1>Welcome to PPP - Polymers' Properties Predictions</h1>
+    <p><!-- Placeholder for project explanation and notices --></p>
+    <button class="btn" onclick="scrollToPredictions()">Go to Predictions</button>
+  </section>
+
+  <footer>
+    <p>Contact me at: <a href="mailto:dung20042911@gmail.com">dung20042911@gmail.com</a></p>
+    <p>My GitHub: <a href="https://www.github.com/DeoGM2911">Dung Tran's GitHub</a></p>
+  </footer>
+
+  <script>
+    const toggle = document.getElementById('menu-toggle');
+    const navLinks = document.getElementById('nav-links');
+    toggle.addEventListener('click', () => {
+      navLinks.classList.toggle('open');
+      toggle.classList.toggle('active');
+    });
+    function scrollToPredictions() {
+      window.location.href = '/predictions';
+    }
+  </script>
+  
+</body>
+</html>

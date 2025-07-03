@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Predictions – ProjectName</title>
+  <!-- link your existing stylesheet -->
+  <link rel="stylesheet" href="../static/styles.css" type="text/css">
+  <style>
+    /* Chat container */
+    .chat-container {
+      max-width: 600px;
+      margin: 2rem auto;
+      display: flex;
+      flex-direction: column;
+      height: 70vh;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      overflow: hidden;
+      background: #fff;
+    }
+    /* Scrollable messages area */
+    .chat-window {
+      flex: 1;
+      padding: 1rem;
+      overflow-y: auto;
+    }
+    /* Input area */
+    .chat-form {
+      display: flex;
+      align-items: center;
+      padding: 0.5rem;
+      border-top: 1px solid #eee;
+      background: #fafafa;
+    }
+    .chat-form input[type="text"] {
+      flex: 1;
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      margin: 0 0.5rem;
+      font-size: 1rem;
+    }
+    .chat-form input[type="file"] {
+      font-size: 0.9rem;
+    }
+    .chat-form button {
+      padding: 0.6rem 1rem;
+      border: none;
+      background: var(--primary-color);
+      color: var(--secondary-color);
+      border-radius: 4px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background var(--transition-speed);
+    }
+    .chat-form button:hover {
+      background: var(--accent-color);
+    }
+    /* Message bubbles */
+    .message {
+      display: inline-block;
+      padding: 0.6rem 1rem;
+      margin-bottom: 0.8rem;
+      border-radius: 16px;
+      max-width: 75%;
+      line-height: 1.4;
+      word-wrap: break-word;
+    }
+    .message.user {
+      background: var(--accent-color);
+      color: #fff;
+      align-self: flex-end;
+      border-bottom-right-radius: 4px;
+    }
+    .message.bot {
+      background: #f0f0f0;
+      color: #333;
+      align-self: flex-start;
+      border-bottom-left-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <!-- —— NAVBAR (identical to index.html) —— -->
+  <nav>
+    <div class="logo">
+      <img src="../images/logo.png" alt="PPP Logo">
+      <span>ProjectName</span>
+    </div>
+    <div class="menu-toggle" id="menu-toggle">
+      <div></div><div></div><div></div>
+    </div>
+    <div class="nav-links" id="nav-links">
+      <a href="/">About</a>
+      <a href="/predictions">Predictions</a>
+    </div>
+  </nav>
+
+  <!-- —— CHAT AREA —— -->
+  <section class="chat-container">
+    <div id="chat-window" class="chat-window">
+      <!-- messages will be appended here -->
+    </div>
+    <form id="chat-form" class="chat-form">
+      <input type="file" id="file-input" accept="image/*">
+      <input type="text" id="text-input" placeholder="Type a SMILES representation...">
+      <button type="submit">Send</button>
+    </form>
+  </section>
+
+  <!-- —— FOOTER (identical to index.html) —— -->
+  <footer>
+    <p>Contact me at: <a href="mailto:dung20042911@gmail.com">dung20042911@gmail.com</a></p>
+    <p>Also see my GitHub: <a href="https://www.github.com/DeoGM2911">Dung Tran's GitHub</a></p>
+  </footer>
+
+  <!-- —— SCRIPTS —— -->
+  <script>
+    // Navbar toggle (same as index.html)
+    const toggle = document.getElementById('menu-toggle');
+    const navLinks = document.getElementById('nav-links');
+    toggle.addEventListener('click', () => {
+      navLinks.classList.toggle('open');
+      toggle.classList.toggle('active');
+    });
+
+    // Chat form handling
+    const chatForm = document.getElementById('chat-form');
+    const chatWindow = document.getElementById('chat-window');
+
+    chatForm.addEventListener('submit', async e => {
+      e.preventDefault();
+      // grab inputs
+      const text = document.getElementById('text-input').value.trim();
+      const fileInput = document.getElementById('file-input');
+      const file = fileInput.files[0];
+
+      if (!text && !file) return;
+
+      // add user message bubble
+      const userMsg = document.createElement('div');
+      userMsg.className = 'message user';
+      userMsg.textContent = text || file.name;
+      chatWindow.appendChild(userMsg);
+      chatWindow.scrollTop = chatWindow.scrollHeight;
+
+      // prepare form data
+      const formData = new FormData();
+      if (file) formData.append('file', file);
+      if (text) formData.append('text', text);
+
+      // clear inputs
+      document.getElementById('text-input').value = '';
+      fileInput.value = '';
+
+      // send to server
+      try {
+        const resp = await fetch('/api/predict', {
+          method: 'POST',
+          body: formData
+        });
+        const result = await resp.json();  // { reply: "..." }
+
+        // add bot reply bubble
+        const botMsg = document.createElement('div');
+        botMsg.className = 'message bot';
+        botMsg.textContent = result.reply;
+        chatWindow.appendChild(botMsg);
+        chatWindow.scrollTop = chatWindow.scrollHeight;
+      } catch (err) {
+        console.error(err);
+      }
+    });
+  </script>
+  <script>
+  const toggle = document.getElementById('menu-toggle');
+  const navLinks = document.getElementById('nav-links');
+  const nav = document.querySelector('nav');
+
+  // Toggle open/close on hamburger click
+  toggle.addEventListener('click', (e) => {
+    e.stopPropagation();            // prevent this click from bubbling to document
+    navLinks.classList.toggle('open');
+    toggle.classList.toggle('active');
+  });
+
+  // Close menu if you click anywhere outside <nav>
+  document.addEventListener('click', (e) => {
+    if (navLinks.classList.contains('open') && !nav.contains(e.target)) {
+      navLinks.classList.remove('open');
+      toggle.classList.remove('active');
+    }
+  });
+
+  function scrollToPredictions() {
+    window.location.href = '/predictions';
+  }
+</script>
+
+</body>
+</html>
