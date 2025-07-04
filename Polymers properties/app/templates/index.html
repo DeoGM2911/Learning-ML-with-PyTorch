@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Project Name</title>
+  <title>PPP</title>
   <link
     rel="stylesheet"
     href="../static/styles.css"
@@ -23,16 +23,59 @@
       <div></div>
     </div>
     <div class="nav-links" id="nav-links">
-      <a href="/">About</a>
-      <a href="/predictions">Predictions</a>
+      <a href="./index.html">About</a>
+      <a href="./predictions.html">Predictions</a>
     </div>
   </nav>
 
   <section class="hero">
-    <h1>Welcome to PPP - Polymers' Properties Predictions</h1>
-    <p><!-- Placeholder for project explanation and notices --></p>
-    <button class="btn" onclick="scrollToPredictions()">Go to Predictions</button>
-  </section>
+  <div class="hero__content">
+    <header class="hero__header">
+      <h1 class="hero__title">Welcome to <span class="highlight">PPP</span></h1>
+      <p class="hero__subtitle">Polymers' Properties Predictions</p>
+    </header>
+
+    <article class="hero__description">
+      <p>Upload a polymer image or enter its SMILES string to instantly predict:</p>
+      <ul class="properties-list">
+        <li><strong>Glass Transition Temperature</strong> (T<sub>g</sub>, °C)</li>
+        <li><strong>Fractional Free Volume</strong> (FFV)</li>
+        <li><strong>Thermal Conductivity</strong> (κ, W/m·K)</li>
+        <li><strong>Density</strong> (g/cm<sup>3</sup>)</li>
+        <li><strong>Radius of Gyration</strong> (R<sub>g</sub>, Å)</li>
+      </ul>
+      <p>This app is powered by Flask, Celery &amp; PyTorch, using a ResNeXt-inspired CNN for rapid property inference.</p>
+    </article>
+
+    <br>
+    <article class="hero__details">
+      <section class="detail">
+        <h2 class="detail__title">How It Works</h2>
+        <p>
+          <strong>SMILES Input:</strong> Prepend your monomer SMILES with “*” (handled automatically under the hood).  
+          <br>
+          <strong>Image Input:</strong> DECIMER transformer converts images into SMILES before prediction.
+        </p>
+      </section>
+
+      <section class="detail">
+        <h2 class="detail__title">Credits &amp; References</h2>
+        <p>
+          Dataset courtesy of the <a href="https://www.kaggle.com/competitions/neurips-open-polymer-prediction-2025/overview" target="_blank" rel="noopener">NeurIPS Open Polymer Prediction 2025</a> competition.
+        </p>
+        <p>
+          Image-to-SMILES via DECIMER (<a href="https://doi.org/10.5281/zenodo.14033214" target="_blank" rel="noopener">Rajan et al., 2024</a>).
+        </p>
+        <div class="hero__cta">
+      <button class="btn btn--primary" onclick="scrollToPredictions()">
+        Go to Predictions
+      </button>
+    </div>
+      </section>
+    </article>
+  </div>
+</section>
+
 
   <footer>
     <p>Contact me at: <a href="mailto:dung20042911@gmail.com">dung20042911@gmail.com</a></p>
@@ -47,7 +90,7 @@
       toggle.classList.toggle('active');
     });
     function scrollToPredictions() {
-      window.location.href = '/predictions';
+      window.location.href = './predictions.html';
     }
   </script>
   
