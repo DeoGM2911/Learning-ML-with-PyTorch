@@ -115,7 +115,7 @@
   <!-- —— NAVBAR (identical to index.html) —— -->
   <nav>
     <div class="logo">
-      <img src="{{ url_for('images', filename='images/logo.png') }}" alt="PPP Logo">
+      <img src="{{ url_for('static', filename='images/logo.png') }}" alt="PPP Logo">
       <span>Polymers' Properties Predictions</span>
     </div>
     <div class="menu-toggle" id="menu-toggle">
@@ -198,6 +198,6 @@
       chatWindow:document.getElementById('chat-window')
     };
 </script>
-<script src="{{ url_for('js', filename='js/submit.js') }}"></script>
+<script src="{{ url_for('static', filename='js/submit.js') }}"></script>
 </body>
 </html>
