@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>PPP: Predictions</title>
   <!-- link your existing stylesheet -->
-  <link rel="stylesheet" href="../static/styles.css" type="text/css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" type="text/css">
   <style>
     /* Chat container */
     /* overall container */
@@ -115,15 +115,15 @@
   <!-- —— NAVBAR (identical to index.html) —— -->
   <nav>
     <div class="logo">
-      <img src="../images/logo.png" alt="PPP Logo">
+      <img src="{{ url_for('images', filename='images/logo.png') }}" alt="PPP Logo">
       <span>Polymers' Properties Predictions</span>
     </div>
     <div class="menu-toggle" id="menu-toggle">
       <div></div><div></div><div></div>
     </div>
     <div class="nav-links" id="nav-links">
-      <a href="./index.html">About</a>
-      <a href="./predictions.html">Predictions</a>
+      <a href="/">About</a>
+      <a href="/predictions">Predictions</a>
     </div>
   </nav>
 
@@ -154,7 +154,7 @@
   </form>
 </section>
 <div class="usage-banner">
-    <a href="./index.html" class="usage-btn">
+    <a href="/" class="usage-btn">
       How to Use This App &rarr;
     </a>
   </div>
@@ -188,14 +188,16 @@
   });
 
   function scrollToPredictions() {
-    window.location.href = './predictions.html';
+    window.location.href = './predictions';
   }
   // grab references
-  const chatForm = document.getElementById('chat-form');
-  const textInput = document.getElementById('text-input');
-  const fileInput = document.getElementById('file-input');
-  const chatWindow = document.getElementById('chat-window');
+  window.__chatHandles = {
+      chatForm:  document.getElementById('chat-form'),
+      textInput: document.getElementById('text-input'),
+      fileInput: document.getElementById('file-input'),
+      chatWindow:document.getElementById('chat-window')
+    };
 </script>
-<script src="../src/submit.js"></script>
+<script src="{{ url_for('js', filename='js/submit.js') }}"></script>
 </body>
 </html>

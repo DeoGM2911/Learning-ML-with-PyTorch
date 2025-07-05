@@ -1,4 +1,3 @@
-from rdkit.Chem import AllChem
 from rdkit import Chem
 from rdkit.Chem import rdFingerprintGenerator
 from rdkit.DataStructs import ConvertToNumpyArray

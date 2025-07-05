@@ -6,7 +6,7 @@
   <title>PPP</title>
   <link
     rel="stylesheet"
-    href="../static/styles.css"
+    href="{{ url_for('static', filename='css/styles.css') }}"
     type="text/css"
   >
 </head>
@@ -14,7 +14,7 @@
   <nav>
     <div class="logo">
       <!-- Update the src to wherever you place your generated logo file -->
-      <img src="..\images\logo.png" alt="PPP Logo">
+      <img src="{{ url_for('images', filename='images/logo.png') }}" alt="PPP Logo">
       <span>Polymers' Properties Predictions</span>
     </div>
     <div class="menu-toggle" id="menu-toggle">
@@ -23,8 +23,8 @@
       <div></div>
     </div>
     <div class="nav-links" id="nav-links">
-      <a href="./index.html">About</a>
-      <a href="./predictions.html">Predictions</a>
+      <a href="/">About</a>
+      <a href="/predictions">Predictions</a>
     </div>
   </nav>
 
@@ -90,9 +90,8 @@
       toggle.classList.toggle('active');
     });
     function scrollToPredictions() {
-      window.location.href = './predictions.html';
+      window.location.href = './predictions';
     }
   </script>
-  
 </body>
 </html>
