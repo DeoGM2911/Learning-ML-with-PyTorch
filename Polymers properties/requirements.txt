@@ -1,0 +1,14 @@
+# python == 3.10.18
+sys
+numpy
+matplotlib
+pandas
+torch
+rdkit == 2025.03.3
+DECIMER
+flask
+celery
+decimer_image_classifier # (download from GitHub)
+# gunicorn for production
+# One also need docker to run redis as the backend and broker
+# for celery
