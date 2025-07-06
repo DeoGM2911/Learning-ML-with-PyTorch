@@ -66,7 +66,7 @@ def process_prediction(text_input, file_bytes=None):
             return generate_reply(None, 'Invalid image file.')
         else:
             # Check if the image is a chemical structure
-            if not is_chemical_image(BytesIO(file_bytes))[0]:
+            if not is_chemical_image(pil_img)[0]:
                 return generate_reply(None, 'The provided image is not a chemical structure.')
     else:
         # validate the text input
