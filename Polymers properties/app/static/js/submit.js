@@ -44,7 +44,8 @@ chatForm.addEventListener('submit', async e => {
       // show the image itself
       const url = URL.createObjectURL(file);
       userHtml = `<img src="${url}" alt="${escapeHTML(file.name)}"
-                      class="uploaded-img" onload="URL.revokeObjectURL(this.src)">`;
+                class="uploaded-img" style="max-width: 100%; height: auto; object-fit: contain;"
+                onload="URL.revokeObjectURL(this.src)">`;
     } else {
       // non-image file → just the name
       userHtml = `<i class="filename">${escapeHTML(file.name)}</i>`;
@@ -73,31 +74,40 @@ chatForm.addEventListener('submit', async e => {
   } catch (err) {
     console.error(err);
     addMessage({
-      html: '<span style="color:red">❌ could not send message</span>',
+      html: '<span style="color:red">❌ could not send message. Please check your connection!</span>',
       sender: 'bot'
     });
     return;
   }
 
-  /* 3. poll for result & render -------------------------------------- */
-  (async function poll() {
-    try {
-      const { status, reply_html } =
-        await fetch(`/api/result/${taskId}`).then(r => r.json());
+  /* 3. show loading indicator ---------------------------------------- */
+const loadingDiv = document.createElement('div');
+loadingDiv.className = 'message bot loading';
+loadingDiv.innerHTML = `<span class="loading-dots"><span>.</span><span>.</span><span>.</span></span>`;
+chatWindow.appendChild(loadingDiv);
+chatWindow.scrollTop = chatWindow.scrollHeight;
 
-      if (status === 'pending') {
-        setTimeout(poll, 1000);
-      } else if (status === 'done') {
-        addMessage({ html: reply_html, sender: 'bot' });
-      } else {
-        throw new Error('task failed');
-      }
-    } catch (err) {
-      console.error(err);
-      addMessage({
-        html: '<span style="color:red">❌ error fetching reply</span>',
-        sender: 'bot'
-      });
+/* 4. poll for result & replace loading bubble ---------------------- */
+(async function poll() {
+  try {
+    const { status, reply_html } =
+      await fetch(`/api/result/${taskId}`).then(r => r.json());
+
+    if (status === 'pending') {
+      setTimeout(poll, 1000);
+    } else if (status === 'done') {
+      loadingDiv.outerHTML = '';  // remove loading message
+      addMessage({ html: reply_html, sender: 'bot' });
+    } else {
+      throw new Error('task failed');
     }
-  })();
-});
+  } catch (err) {
+    console.error(err);
+    loadingDiv.outerHTML = '';  // remove loading message
+    addMessage({
+      html: '<span style="color:red">❌ error fetching reply</span>',
+      sender: 'bot'
+    });
+  }
+})();
+})

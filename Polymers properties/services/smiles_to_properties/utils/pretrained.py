@@ -4,6 +4,7 @@ from ..model.models import PolymerCNN
 from pathlib import Path
 from ..model.pretrained_data import convert_rg, convert_tg
 
+
 def load_pretrained():
     # CNN models
     tg_cnn = PolymerCNN(1, (16, 32, 32, 64, 128, 256), ((4, 8), (2, 4, 4, 8)), 2, (2, 4), 256)
@@ -39,3 +40,7 @@ def predict(models, X):
     rg_out = convert_rg(models["rg"](X).detach())
     return {'tg': tg_out.numpy(), 'ffv': ffv_out.numpy(), 'tc': tc_out.numpy(), 
             'density': density_out.numpy(), 'rg': rg_out.numpy()}
+
+
+# Load in the pretrained models
+MODELS = load_pretrained()

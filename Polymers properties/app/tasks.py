@@ -1,13 +1,11 @@
 # tasks.py
 from app import celery
 from PIL import Image
-from services.smiles_to_properties.utils.pretrained import load_pretrained, predict
-from services.smiles_to_properties.utils.vectorize import mol_vectorize_text
+from io import BytesIO
+from services.smiles_to_properties.utils.pretrained import MODELS, predict
+from services.smiles_to_properties.utils.vectorize import mol_vectorize_text, EMBED_DIM
 from services.images_to_smiles.models.decimer import predict_smiles, is_chemical_image
 from services.images_to_smiles.utils.validate_txt import clean_smiles, is_smiles, is_smiles_polymer
-
-# Preload the models only once
-MODELS = load_pretrained()
 
 
 def generate_reply(props, error):
@@ -15,7 +13,7 @@ def generate_reply(props, error):
     if props:
         return f"""<!-- Prediction Results Card -->
 <section class="prediction-results">
-  <h2>Predicted Polymer Properties</h2>
+  <h2>Predicted Properties</h2>
   <table class="properties-table">
     <thead>
       <tr>
@@ -26,23 +24,23 @@ def generate_reply(props, error):
     <tbody>
       <tr>
         <td>Glass Transition Temperature</td>
-        <td>{{ props['tg'].item():.2f }} °C</td>
+        <td>{props['tg'].item():.2f} °C</td>
       </tr>
       <tr>
         <td>Fractional Free Volume (FFV)</td>
-        <td>{{ props['ffv'].item():.4f }}</td>
+        <td>{props['ffv'].item():.4f}</td>
       </tr>
       <tr>
         <td>Thermal Conductivity</td>
-        <td>{{ props['tc'].item():.2f }} W/m·K</td>
+        <td>{props['tc'].item():.2f} W/m·K</td>
       </tr>
       <tr>
         <td>Density</td>
-        <td>{{ props['density'].item():.3f }} g/cm<sup>3</sup></td>
+        <td>{props['density'].item():.3f} g/cm<sup>3</sup></td>
       </tr>
       <tr>
         <td>Radius of Gyration</td>
-        <td>{{ props['rg'].item():.2f }} Å</td>
+        <td>{props['rg'].item():.2f} Å</td>
       </tr>
     </tbody>
   </table>
@@ -56,11 +54,6 @@ def generate_reply(props, error):
 
 
 @celery.task
-def add(x, y):
-    return x + y
-
-
-@celery.task
 def process_prediction(text_input, file_bytes=None):
     global MODELS
     """Do your heavy inference here."""
@@ -68,12 +61,12 @@ def process_prediction(text_input, file_bytes=None):
     if file_bytes:
         # convert the raw bytes to PIL Image
         try:
-            pil_img = Image.open(file_bytes).convert('RGB')
+            pil_img = Image.open(BytesIO(file_bytes)).convert('RGB')
         except Exception as e:
             return generate_reply(None, 'Invalid image file.')
         else:
             # Check if the image is a chemical structure
-            if not is_chemical_image[0]:
+            if not is_chemical_image(BytesIO(file_bytes))[0]:
                 return generate_reply(None, 'The provided image is not a chemical structure.')
     else:
         # validate the text input
@@ -92,6 +85,6 @@ def process_prediction(text_input, file_bytes=None):
             return generate_reply(None, 'The image does not contain a valid polymer structure.')
     
     # Now predict the properties
-    props = predict(MODELS, mol_vectorize_text(smiles))
+    props = predict(MODELS, mol_vectorize_text(smiles, EMBED_DIM))
     
-    return generate_reply(props)
+    return generate_reply(props, None)

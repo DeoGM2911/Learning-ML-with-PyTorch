@@ -21,7 +21,7 @@ def is_chemical_image(img_file):
     Return the prediction (true/false) and the confidence.
     """
     clf = DecimerImageClassifier()
-    img = Image.open(img_file)
+    img = Image.open(img_file) if isinstance(img_file, str) else img_file
     is_struct = clf.is_chemical_structure(img, THRESHOLD)
     score = clf.get_classifier_score(img)
     return is_struct, score
