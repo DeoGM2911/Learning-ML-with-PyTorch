@@ -9,5 +9,6 @@ from app import create_app
 
 app = create_app()
 
+# Comment out the following line if you want to run the app with Gunicorn
 if __name__ == "__main__":
     app.run(debug=True, use_reloader=False)

@@ -25,4 +25,4 @@ Usage: For those who's interested in the code, to run this project one must:
 
 For deploying with `gunicorn` and `docker`,
 
-<!-- To be implemented -->
+Use the `Dockerfile` and the `docker-compose.yml` for deploying the app.
